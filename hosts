@@ -1,0 +1,9 @@
+[cluster:children]
+master
+worker
+
+[master]
+192.168.9.172
+
+[worker]
+192.168.9.172

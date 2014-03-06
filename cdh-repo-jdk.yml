@@ -1,0 +1,13 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Configure Cloudera CDH5 repo
+      get_url: url=http://archive.cloudera.com/cdh5/redhat/6/x86_64/cdh/cloudera-cdh5.repo dest=/etc/yum.repos.d/cloudera-cdh5.repo force=no owner=root group=root
+    - name: Configure Cloudera CM repo
+      get_url: url=http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/cloudera-manager.repo dest=/etc/yum.repos.d/cloudera-manager.repo force=no owner=root group=root
+    - name: Oracle JDK
+      yum: name=jdk state=installed enablerepo=cloudera-manager disablerepo=*
+      register: last_result
+    - name: Force Oracle JDK
+      command: alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_31/bin/java 20000
+      when: last_result.changed
