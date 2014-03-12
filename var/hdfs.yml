@@ -1,10 +1,10 @@
-hadoop_temp_dir: /tmp/hadoop
+hadoop_temp_dir: /data2/hadoop-tmp
 dfs_name_dir: /hadoop-data/dfs/name
 dfs_edits_dir: /hadoop-data/dfs/edits
 dfs_data_dirs:
   - /data1/dfs
   - /data2/dfs
-  - /data3/dfs
-  - /data4/dfs
-dfs_replication: 1
+  # - /data3/dfs
+  # - /data4/dfs
+dfs_replication: 2
 dfs_block_size: 134217728

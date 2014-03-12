@@ -1,6 +1,6 @@
 spark_local_dirs:
   - /data1/spark
   - /data2/spark
-  - /data3/spark
-  - /data4/spark
+  # - /data3/spark
+  # - /data4/spark
 spark_worker_dir: /data1/spark-worker

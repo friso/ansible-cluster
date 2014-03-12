@@ -2,7 +2,7 @@
 - hosts: cluster
   tasks:
     - name: Install Spark daemons
-      yum: name=spark-core state=installed
+      yum: name=spark-core,spark-python,hadoop-client state=installed
 
 - hosts: master
   vars_files:

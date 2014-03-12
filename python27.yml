@@ -1,0 +1,18 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Download Python27 source
+      get_url: url=http://python.org/ftp/python/2.7.6/Python-2.7.6.tgz dest=/tmp/Python-2.7.6.tgz owner=root group=root force=no
+    - name: Extract Python27 source
+      command: /bin/tar -xzf /tmp/Python-2.7.6.tgz chdir=/usr/local/src creates=/usr/local/src/Python-2.7.6/configure
+    - name: Make and *ALT* install Python27
+      shell: ./configure --prefix=/usr/local && /usr/bin/make && /usr/bin/make altinstall chdir=/usr/local/src/Python-2.7.6/ creates=/usr/local/bin/python2.7
+    # - name: easy_install
+    #   yum: name=python-setuptools state=installed
+    # - name: pip + virtualenv
+    #   easy_install: name={{ item }}
+    #   with_items:
+    #     - pip
+    #     - virtualenv
+    # - name: scipy deps
+    #   yum: name=lapack,lapack-devel,blas,blas-devel,atlas,atlas-devel

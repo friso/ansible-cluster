@@ -6,7 +6,7 @@
     - name: Configure Cloudera CM repo
       get_url: url=http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/cloudera-manager.repo dest=/etc/yum.repos.d/cloudera-manager.repo force=no owner=root group=root
     - name: Oracle JDK
-      yum: name=jdk state=installed enablerepo=cloudera-manager disablerepo=*
+      yum: name=jdk state=present
       register: last_result
     - name: Force Oracle JDK
       command: alternatives --install /usr/bin/java java /usr/java/jdk1.6.0_31/bin/java 20000

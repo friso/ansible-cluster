@@ -24,12 +24,14 @@
 ### === IMPORTANT ===
 ### Change the following to specify a real cluster's Master host
 ###
-export SPARK_JAVA_OPTS="-Dspark.local.dir={{ spark_local_dirs | join(',') }} -Djava.net.preferIPv4Stack=true"
+export SPARK_JAVA_OPTS="-Dspark.local.dir={{ spark_local_dirs | join(',') }} -Djava.net.preferIPv4Stack=true -Dspark.executor.memory=8g"
 
-
-export STANDALONE_SPARK_MASTER_HOST=`hostname`
-export SPARK_MASTER_IP={{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}
-export SPARK_LOCAL_IP={{ ansible_eth0["ipv4"]["address"] }}
+# export STANDALONE_SPARK_MASTER_HOST={{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}
+# export SPARK_MASTER_IP={{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}
+# export SPARK_LOCAL_IP={{ ansible_eth0["ipv4"]["address"] }}
+export STANDALONE_SPARK_MASTER_HOST={{ hostvars[groups['master'][0]].ansible_fqdn }}
+export SPARK_MASTER_IP={{ hostvars[groups['master'][0]].ansible_fqdn }}
+export SPARK_LOCAL_IP={{ ansible_fqdn }}
 
 
 ### Let's run everything with JVM runtime, instead of Scala

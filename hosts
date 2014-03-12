@@ -3,7 +3,6 @@ master
 worker
 
 [master]
-192.168.9.172
+ec2-54-195-191-250.eu-west-1.compute.amazonaws.com
 
 [worker]
-192.168.9.172

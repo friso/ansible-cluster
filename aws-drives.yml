@@ -1,0 +1,24 @@
+---
+- hosts: cluster
+
+  tasks:
+    - name: unmount existing /dev/xvdb
+      mount: name=/mnt/ephemeral state=unmounted fstype=ext3 src=/dev/xvdb
+
+    - name: mkfs data1
+      filesystem: dev=/dev/xvdb fstype=ext4 force=yes opts="-E lazy_itable_init=1"
+    - name: mkfs data2
+      filesystem: dev=/dev/xvdc fstype=ext4 force=yes opts="-E lazy_itable_init=1"
+    # - name: mkfs data3
+    #   filesystem: dev=/dev/xvdd fstype=ext4 force=yes opts="-E lazy_itable_init=1"
+    # - name: mkfs data4
+    #   filesystem: dev=/dev/xvde fstype=ext4 force=yes opts="-E lazy_itable_init=1"
+
+    - name: mount /data1
+      mount: name=/data1 src=/dev/xvdb fstype=ext4 state=mounted
+    - name: mount /data2
+      mount: name=/data2 src=/dev/xvdc fstype=ext4 state=mounted
+    # - name: mount /data3
+    #   mount: name=/data3 src=/dev/xvdd fstype=ext4 state=mounted
+    # - name: mount /data4
+    #   mount: name=/data4 src=/dev/xvde fstype=ext4 state=mounted

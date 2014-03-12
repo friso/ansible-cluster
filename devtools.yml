@@ -1,0 +1,5 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Install dev tools++
+      yum: name=autoconf,automake,binutils,bison,flex,gcc,gcc-c++,gettext,libtool,make,patch,pkgconfig,redhat-rpm-config,rpm-build,byacc,cscope,ctags,cvs,diffstat,doxygen,elfutils,gcc-gfortran,git,indent,intltool,patchutils,rcs,subversion,swig,systemtap,zlib-devel,bzip2-devel,openssl-devel,ncurses-devel,sqlite-devel,readline-devel,tk-devel,openssh-clients,wget,screen,vim,kernel-devel,kernel-headers,make,libselinux-python state=installed
