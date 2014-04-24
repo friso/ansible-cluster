@@ -1,0 +1,64 @@
+- hosts: 127.0.0.1
+  vars_files:
+    - var/search-cluster.yml
+  connection: local
+  tasks:
+    - name: create search security group
+      local_action:
+        module: ec2_group
+        name: search
+        description: Security group for Elastic Search clusters
+        region: eu-west-1
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 0
+            to_port: 65535
+            group_name: search
+        state: present
+
+    - name: create search node instances
+      local_action:
+        module: ec2
+        key_name: "{{ key_name }}"
+        instance_type: "{{ node_instance_type }}"
+        image: "{{ node_ami }}"
+        region: eu-west-1
+        volumes:
+          - device_name: /dev/sdb
+            volume_size: 10
+            delete_on_termination: true
+          - device_name: /dev/sdc
+            volume_size: 30
+            delete_on_termination: true
+          - device_name: /dev/sdd
+            volume_size: 30
+            delete_on_termination: true
+        wait: yes
+        group: search
+        instance_tags:
+          Name: search-node
+          Environment: "{{cluster_environment}}"
+        count_tag:
+          Name: search-node
+          Environment: "{{cluster_environment}}"
+        exact_count: "{{ node_count }}"
+      register: search_nodes
+      tags:
+        - instances
+
+    - name: Wait for SSH on search machines
+      wait_for: host={{ item.public_ip }} delay=15 port=22 state=started
+      with_items: search_nodes.instances
+      when: search_nodes.changed
+      tags:
+        - instances
+
+    - name: add machines to search group
+      add_host: hostname={{ item.public_ip }} groupname=search-nodes
+      with_items: search_nodes.tagged_instances
+      tags:
+        - instances

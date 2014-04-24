@@ -1,0 +1,8 @@
+---
+- hosts: database
+  vars_files:
+    - var/database-cluster.yml
+
+  tasks:
+    - name: Cassandra service restarted
+      action: service name=cassandra state=restarted

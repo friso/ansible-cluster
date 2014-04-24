@@ -1,0 +1,12 @@
+---
+- hosts: cluster
+  vars_files:
+  - var/pyspark-packages.yml
+  tasks:
+    - name: virtualenv deps
+      yum: name=lapack,lapack-devel,blas,blas-devel,atlas,atlas-devel,libpng,libpng-devel
+
+    - name: Populate spark-venv virtualenv
+      pip: name={{ item }} state=present virtualenv=/usr/local/virtualenv/spark virtualenv_command=/usr/local/bin/virtualenv-2.7
+      with_items: $packages
+

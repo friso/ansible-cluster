@@ -1,0 +1,23 @@
+---
+- hosts: master
+  vars_files:
+  - var/hdfs.yml
+  tasks:
+    - name: Restart HDFS master services
+      service: name={{ item }} enabled=yes state=restarted
+      with_items:
+      - hadoop-hdfs-namenode
+      - hadoop-hdfs-secondarynamenode
+      tags:
+        - restart
+
+- hosts: worker
+  vars_files:
+  - var/hdfs.yml
+  tasks:
+    - name: Restart HDFS worker services
+      service: name={{ item }} enabled=yes state=restarted
+      with_items:
+      - hadoop-hdfs-datanode
+      tags:
+        - restart

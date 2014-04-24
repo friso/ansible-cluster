@@ -1,0 +1,11 @@
+---
+- hosts: cluster
+
+  tasks:
+    - name: mkfs on drives > xvda
+      filesystem: dev=/dev/{{ item }} fstype=ext4 force=yes opts="-E lazy_itable_init=1"
+      with_items: ansible_devices.keys() | difference(['xvda', 'xvda1'])
+
+    - name: mount data drives
+      mount: name=/drives/{{ item }} src=/dev/{{ item }} fstype=ext4 state=mounted
+      with_items: ansible_devices.keys() | difference(['xvda', 'xvda1'])

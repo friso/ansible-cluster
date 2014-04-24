@@ -1,0 +1,9 @@
+cran_mirror: http://cran-mirror.cs.uu.nl/
+R_packages:
+  - ggplot2
+  - ggthemes
+  - zoo
+  - reshape2
+  - outliers
+  - optparse
+  - plyr

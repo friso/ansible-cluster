@@ -1,0 +1,60 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Install MapReduce daemons
+      yum: name=hadoop-yarn state=installed
+    - name: limits
+      lineinfile:
+        dest: /etc/security/limits.d/hadoop.conf
+        owner: root
+        group: root
+        create: yes
+        line: ${item}
+        state: present
+      with_items:
+        - mapred  -       nofile      32768
+      tags:
+        - limits
+
+- hosts: master
+  vars_files:
+  - var/mapreduce.yml
+  - var/analytics-cluster.yml
+  tasks:
+    - name: Install MapReduce master processes
+      yum: name=hadoop-yarn-resourcemanager,hadoop-mapreduce-historyserver state=installed
+    - name: YARN config
+      template: src=files/mapreduce/yarn-site.xml dest=/etc/hadoop/conf/yarn-site.xml
+    - name: MapReduce config (mapred-site)
+      template: src=files/mapreduce/mapred-site.xml dest=/etc/hadoop/conf/mapred-site.xml
+    - name: Start YARN and MR services
+      service: name={{ item }} enabled=yes state=started
+      with_items:
+      - hadoop-yarn-resourcemanager
+      - hadoop-mapreduce-historyserver
+      # - hadoop-yarn-proxyserver
+
+- hosts: worker
+  vars_files:
+  - var/mapreduce.yml
+  - var/analytics-cluster.yml
+  tasks:
+    - name: Install MapReduce worker processes
+      yum: name=hadoop-yarn-nodemanager,hadoop-mapreduce state=installed
+    - name: Create mapred local dirs
+      file: path={{ item }} owner=mapred group=hadoop state=directory mode=0774
+      with_items: $mapred_local_dirs
+    - name: Create YARN local dirs
+      file: path={{ item }} owner=yarn group=yarn state=directory mode=0774
+      with_items: $yarn_local_dirs
+    - name: Create YARN log dirs
+      file: path={{ item }} owner=yarn group=yarn state=directory mode=0774
+      with_items: $yarn_log_dirs
+    - name: YARN config (yarn-site)
+      template: src=files/mapreduce/yarn-site.xml dest=/etc/hadoop/conf/yarn-site.xml
+    - name: MapReduce config (mapred-site)
+      template: src=files/mapreduce/mapred-site.xml dest=/etc/hadoop/conf/mapred-site.xml
+    - name: Start YARN worker services
+      service: name={{ item }} enabled=yes state=started
+      with_items:
+      - hadoop-yarn-nodemanager

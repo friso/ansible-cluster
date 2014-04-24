@@ -1,0 +1,24 @@
+---
+- hosts: database
+  vars_files:
+    - var/database-cluster.yml
+
+  tasks:
+    - name: Configure Datastax repo
+      copy: src=files/datastax.repo dest=/etc/yum.repos.d/ owner=root group=root
+    - name: Install JNA + Cassandra
+      yum: name=jna,cassandra20 state=installed
+
+    - name: chown commitlog
+      file: path={{ commitlog_directory }} owner=cassandra group=cassandra state=directory
+    - name: chown saved_caches
+      file: path={{ saved_caches_directory }} owner=cassandra group=cassandra state=directory
+    - name: chown data dirs
+      file: path={{ item }} owner=cassandra group=cassandra state=directory
+      with_items: data_file_directories
+
+    - name: cassandra yaml
+      template: src=files/cassandra.yaml dest=/etc/cassandra/conf/cassandra.yaml
+
+    - name: Cassandra service started
+      action: service name=cassandra enabled=yes state=started

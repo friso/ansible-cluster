@@ -3,6 +3,16 @@ master
 worker
 
 [master]
-ec2-54-195-191-250.eu-west-1.compute.amazonaws.com
+ec2-54-73-134-82.eu-west-1.compute.amazonaws.com
 
 [worker]
+ec2-54-73-135-167.eu-west-1.compute.amazonaws.com
+ec2-54-247-11-116.eu-west-1.compute.amazonaws.com
+ec2-54-216-18-34.eu-west-1.compute.amazonaws.com
+ec2-54-220-36-240.eu-west-1.compute.amazonaws.com
+ec2-54-195-154-226.eu-west-1.compute.amazonaws.com
+ec2-46-51-160-110.eu-west-1.compute.amazonaws.com
+ec2-54-73-90-228.eu-west-1.compute.amazonaws.com
+ec2-54-73-111-207.eu-west-1.compute.amazonaws.com
+ec2-54-195-127-218.eu-west-1.compute.amazonaws.com
+ec2-79-125-39-76.eu-west-1.compute.amazonaws.com

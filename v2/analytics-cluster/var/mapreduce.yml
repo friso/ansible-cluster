@@ -1,0 +1,15 @@
+mapred_local_dirs:
+  - /drives/xvdb/mapred/local
+  - /drives/xvdc/mapred/local
+  - /drives/xvdd/mapred/local
+  - /drives/xvde/mapred/local
+yarn_local_dirs:
+  - /drives/xvdb/yarn/local
+  - /drives/xvdc/yarn/local
+  - /drives/xvdd/yarn/local
+  - /drives/xvde/yarn/local
+yarn_log_dirs:
+  - /drives/xvdb/yarn/log
+  - /drives/xvdc/yarn/log
+  - /drives/xvdd/yarn/log
+  - /drives/xvde/yarn/log

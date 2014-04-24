@@ -1,0 +1,69 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Install HDFS daemons
+      yum: name=hadoop-hdfs state=installed
+    - name: limits
+      lineinfile:
+        dest: /etc/security/limits.d/hadoop.conf
+        owner: root
+        group: root
+        create: yes
+        line: "{{item}}"
+        state: present
+      with_items:
+        - hdfs    -       nofile      32768
+      tags:
+        - limits
+
+- hosts: master
+  vars_files:
+  - var/hdfs.yml
+  tasks:
+    - name: Install HDFS NN and SNN
+      yum: name=hadoop-hdfs-namenode,hadoop-hdfs-secondarynamenode state=installed
+    - name: Create NN and temp dirs
+      file: path={{ item }} owner=hdfs group=hadoop state=directory mode=0774
+      with_items:
+      - "{{dfs_name_dir}}"
+      - "{{dfs_edits_dir}}"
+      - "{{hadoop_temp_dir}}"
+    - name: HDFS config (hadoop-env)
+      template: src=files/hdfs/hadoop-env.sh dest=/etc/hadoop/conf/hadoop-env.sh mode=0755
+    - name: HDFS config (core-site)
+      template: src=files/hdfs/core-site.xml dest=/etc/hadoop/conf/core-site.xml
+    - name: HDFS config (hdfs-site)
+      template: src=files/hdfs/hdfs-site.xml dest=/etc/hadoop/conf/hdfs-site.xml
+    - name: Format HDFS
+      sudo: yes
+      sudo_user: hdfs
+      command: hdfs namenode -format creates={{ dfs_name_dir }}/current
+    - name: NN and SNN services
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+      - hadoop-hdfs-namenode
+      - hadoop-hdfs-secondarynamenode
+
+- hosts: worker
+  vars_files:
+  - var/hdfs.yml
+  tasks:
+    - name: Install HDFS DN
+      yum: name=hadoop-hdfs-datanode state=installed
+    - name: Create Hadoop temp dir
+      file: path={{ item }} owner=hdfs group=hadoop state=directory mode=0774
+      with_items:
+      - $hadoop_temp_dir
+    - name: Create DN data dirs
+      file: path={{ item }} owner=hdfs group=hadoop state=directory mode=0774
+      with_items: $dfs_data_dirs
+    - name: HDFS config (hadoop-env)
+      template: src=files/hdfs/hadoop-env.sh dest=/etc/hadoop/conf/hadoop-env.sh
+    - name: HDFS config (core-site)
+      template: src=files/hdfs/core-site.xml dest=/etc/hadoop/conf/core-site.xml
+    - name: HDFS config (hdfs-site)
+      template: src=files/hdfs/hdfs-site.xml dest=/etc/hadoop/conf/hdfs-site.xml
+    - name: DN services
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+      - hadoop-hdfs-datanode

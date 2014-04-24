@@ -1,0 +1,22 @@
+---
+- hosts: master
+  vars_files:
+  - var/spark.yml
+  tasks:
+    - name: Restart Spark master service
+      service: name={{ item }} enabled=yes state=restarted
+      with_items:
+      - spark-master
+      tags:
+        - restart
+
+- hosts: worker
+  vars_files:
+  - var/spark.yml
+  tasks:
+    - name: Restart Spark worker service
+      service: name={{ item }} enabled=yes state=restarted
+      with_items:
+      - spark-worker
+      tags:
+        - restart

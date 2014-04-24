@@ -1,0 +1,13 @@
+---
+- hosts: opscenter
+  tasks:
+    - name: install opscenter
+      yum: name=opscenter-free state=installed
+    - name: opscenter service started
+      action: service name=opscenterd state=started
+- hosts: cluster
+  tasks:
+    - name: Install agents
+      yum: name=datastax-agent state=installed
+    - name: Agent service started
+      action: service name=datastax-agent state=started

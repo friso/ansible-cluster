@@ -1,0 +1,7 @@
+---
+- hosts: cluster
+  # user: ec2-user
+  # sudo: yes
+  tasks:
+    - name: Configure EPEL
+      copy: src=files/epel.repo dest=/etc/yum.repos.d/ owner=root group=root

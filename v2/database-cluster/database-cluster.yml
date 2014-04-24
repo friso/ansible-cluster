@@ -1,0 +1,8 @@
+---
+- include: database-nodes.yml
+
+- include: ../common/format-and-mount-drives.yml
+- include: ../common/bootstrap.yml
+- include: ../common/cdh-repo-jdk.yml
+
+- include: cassandra.yml

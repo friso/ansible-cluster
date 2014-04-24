@@ -1,0 +1,9 @@
+---
+- include: search-nodes.yml
+
+- include: ../common/format-instance-store-two-drives.yml
+- include: ../common/bootstrap.yml
+- include: ../common/devtools.yml
+- include: ../common/cdh-repo-jdk.yml
+
+- include: ./elasticsearch.yml

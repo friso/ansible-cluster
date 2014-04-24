@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+<property>
+  <name>hadoop.common.configuration.version</name>
+  <value>0.23.0</value>
+  <description>version of this configuration file</description>
+</property>
+
+<property>
+  <name>hadoop.tmp.dir</name>
+  <value>{{ hadoop_temp_dir }}</value>
+  <description>A base for other temporary directories.</description>
+</property>
+
+<property>
+  <name>fs.defaultFS</name>
+  <value>hdfs://{{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}/</value>
+  <description>The name of the default file system.  A URI whose
+  scheme and authority determine the FileSystem implementation.  The
+  uri's scheme determines the config property (fs.SCHEME.impl) naming
+  the FileSystem implementation class.  The uri's authority is used to
+  determine the host, port, etc. for a filesystem.</description>
+</property>
+
+<property>
+  <name>fs.default.name</name>
+  <value></value>
+  <description>Deprecated. Use (fs.defaultFS) property
+  instead</description>
+</property>
+
+<property>
+  <name>io.seqfile.local.dir</name>
+  <value>${hadoop.tmp.dir}/io/local</value>
+  <description>The local directory where sequence file stores intermediate
+  data files during merge.  May be a comma-separated list of
+  directories on different devices in order to spread disk i/o.
+  Directories that do not exist are ignored.
+  </description>
+</property>
+
+<property>
+  <name>fs.s3.buffer.dir</name>
+  <value>${hadoop.tmp.dir}/s3</value>
+  <description>Determines where on the local filesystem the S3 filesystem
+  should store files before sending them to S3
+  (or after retrieving them from S3).
+  </description>
+</property>
+
+</configuration>

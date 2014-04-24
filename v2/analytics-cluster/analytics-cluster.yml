@@ -1,0 +1,13 @@
+---
+- include: analytics-nodes.yml
+- include: ../common/format-and-mount-drives.yml
+- include: ../common/bootstrap.yml
+- include: ../common/devtools.yml
+- include: R.yml
+- include: python27.yml
+
+- include: ../common/cdh-repo-jdk.yml
+- include: hdfs.yml
+- include: mapreduce.yml
+- include: spark.yml
+- include: pyspark-env.yml

@@ -1,0 +1,10 @@
+---
+- hosts: cluster
+  vars_files:
+  - var/R-packages.yml
+  tasks:
+    - name: R
+      yum: name=R
+    - name: Install R packages
+      shell: R -e 'install.packages("{{item}}", repos = "{{cran_mirror}}")' creates=/usr/lib64/R/library/{{item}}/INDEX
+      with_items: $packages

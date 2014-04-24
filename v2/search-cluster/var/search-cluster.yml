@@ -1,0 +1,19 @@
+node_count: 4
+node_ami: ami-4cba4b3b
+node_instance_type: m3.xlarge
+
+key_name: RFS-ReBB
+
+cluster_name: rebb-search-cluster
+
+plugin_dir: /usr/share/elasticsearch/plugins
+
+elasticsearch_plugins:
+  - artifact: elasticsearch/elasticsearch-cloud-aws/2.1.0
+    creates: "{{plugin_dir}}/cloud-aws/elasticsearch-cloud-aws-2.1.0.jar"  
+  - artifact: elasticsearch/marvel/1.1.0
+    creates: "{{plugin_dir}}/marvel/marvel-1.1.0.jar"  
+
+
+
+

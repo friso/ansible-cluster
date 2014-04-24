@@ -1,0 +1,33 @@
+---
+- hosts: search
+  vars_files:
+    - var/search-cluster.yml
+
+  tasks:
+    - name: Configure ElasticSearch repo
+      copy: src=files/elasticsearch.repo dest=/etc/yum.repos.d/ owner=root group=root    
+
+    - name: Install ElasticSearch
+      yum:  name=elasticsearch state=installed  
+
+    - name: Install cloud-aws plugin
+      command: /usr/share/elasticsearch/bin/plugin -i {{ item.artifact }} creates={{item.creates}}
+      with_items: elasticsearch_plugins
+      notify: restart elasticsearch
+
+    - name: Configure ElasticSearch
+      template: src=files/elasticsearch.conf.yml dest=/etc/elasticsearch/elasticsearch.yml
+      notify: reload elasticsearch config
+
+    - name: Configure ElasticSearch Logging
+      template: src=files/logging.yml dest=/etc/elasticsearch/logging.yml
+
+    - name: Start ElasticSearch
+      service: name=elasticsearch state=started enabled=yes  
+
+  handlers:
+  - name: restart elasticsearch
+    action: service name=elasticsearch state=restarted
+
+  - name: reload elasticsearch config
+    action: service name=elasticsearch state=reloaded

@@ -24,7 +24,7 @@
 ### === IMPORTANT ===
 ### Change the following to specify a real cluster's Master host
 ###
-export SPARK_JAVA_OPTS="-Dspark.local.dir={{ spark_local_dirs | join(',') }} -Djava.net.preferIPv4Stack=true -Dspark.executor.memory=2g -Dspark.worker.timeout=600 -Dspark.akka.timeout=600 -Dspark.akka.heartbeat.pauses=600 -Dspark.akka.failure-detector.threshold=600 -Dspark.akka.heartbeat.interval=1000 -Dspark.storage.blockManagerTimeoutIntervalMs=600000 -Dspark.cores.max=10 -Dspark.deploy.defaultCores=10 -Dspark.scheduler.mode=FAIR"
+export SPARK_JAVA_OPTS="-Dspark.local.dir={{ spark_local_dirs | join(',') }} -Djava.net.preferIPv4Stack=true -Dspark.executor.memory=7g -Dspark.worker.timeout=600 -Dspark.akka.timeout=600 -Dspark.akka.heartbeat.pauses=600 -Dspark.akka.failure-detector.threshold=600 -Dspark.akka.heartbeat.interval=1000 -Dspark.storage.blockManagerTimeoutIntervalMs=600000"
 
 # export STANDALONE_SPARK_MASTER_HOST={{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}
 # export SPARK_MASTER_IP={{ hostvars[groups['master'][0]].ansible_eth0.ipv4.address }}
@@ -33,6 +33,8 @@ export STANDALONE_SPARK_MASTER_HOST={{ hostvars[groups['master'][0]].ansible_fqd
 export SPARK_MASTER_IP={{ hostvars[groups['master'][0]].ansible_fqdn }}
 export SPARK_LOCAL_IP={{ ansible_fqdn }}
 
+export SPARK_HOME=/usr/lib/spark
+export REMOTE_SPARK_HOME=/usr/lib/spark
 
 ### Let's run everything with JVM runtime, instead of Scala
 export SPARK_LAUNCH_WITH_SCALA=0
@@ -44,6 +46,7 @@ export SPARK_WORKER_PORT=7078
 export SPARK_WORKER_WEBUI_PORT=18081
 export SPARK_WORKER_DIR={{ spark_worker_dir }}
 export SPARK_LOG_DIR=/var/log/spark
+
 
 if [ -n "$HADOOP_HOME" ]; then
   export SPARK_LIBRARY_PATH=$SPARK_LIBRARY_PATH:${HADOOP_HOME}/lib/native

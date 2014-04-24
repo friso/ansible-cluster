@@ -1,0 +1,26 @@
+analytics_master_volumes:
+  - device_name: /dev/sdb
+    volume_size: 15
+    delete_on_termination: true
+
+analytics_worker_volumes:
+  - device_name: /dev/sdb
+    volume_size: 50
+    delete_on_termination: true
+  - device_name: /dev/sdc
+    volume_size: 50
+    delete_on_termination: true
+  - device_name: /dev/sdd
+    volume_size: 50
+    delete_on_termination: true
+  - device_name: /dev/sde
+    volume_size: 50
+    delete_on_termination: true
+
+worker_count: 1
+worker_ami: ami-4cba4b3b
+worker_instance_type: m3.xlarge
+
+master_count: 1
+master_ami: ami-4cba4b3b
+master_instance_type: m3.xlarge

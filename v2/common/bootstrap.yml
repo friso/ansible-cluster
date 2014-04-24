@@ -1,0 +1,9 @@
+---
+- hosts: cluster
+  tasks:
+    - name: set swappiness
+      sysctl: name=vm.swappiness value=0 state=present ignoreerrors=yes
+    - name: Remove openjdk
+      yum: name=java-1.6.0-openjdk state=absent
+    - name: remove stray JAVA_HOME
+      file: path=/etc/profile.d/java.sh state=absent

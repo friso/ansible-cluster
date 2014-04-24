@@ -1,0 +1,5 @@
+[datastax]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+baseurl=http://rpm.datastax.com/community/
+enabled=1
+gpgcheck=0

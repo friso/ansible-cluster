@@ -1,0 +1,36 @@
+---
+- hosts: cluster
+  tasks:
+    - name: Install Spark daemons
+      yum: name=spark-core,spark-python,hadoop-client state=installed
+
+- hosts: master
+  vars_files:
+  - var/spark.yml
+  tasks:
+    - name: Install Spark master
+      yum: name=spark-master state=installed
+    - name: Spark config (spark-env)
+      template: src=files/spark/spark-env.sh dest=/etc/spark/conf/spark-env.sh mode=0755
+    - name: Start Spark master service
+      service: name={{ item }} enabled=yes state=started
+      with_items:
+      - spark-master
+
+- hosts: worker
+  vars_files:
+  - var/spark.yml
+  tasks:
+    - name: Create Spark local dirs
+      file: path={{ item }} owner=spark group=spark state=directory mode=0774
+      with_items: spark_local_dirs
+    - name: Create Spark worker dir
+      file: path={{ spark_worker_dir }} owner=spark group=spark state=directory mode=0774
+    - name: Install Spark worker
+      yum: name=spark-worker state=installed
+    - name: Spark config (spark-env)
+      template: src=files/spark/spark-env.sh dest=/etc/spark/conf/spark-env.sh
+    - name: Start Spark worker service
+      service: name={{ item }} enabled=yes state=started
+      with_items:
+      - spark-worker

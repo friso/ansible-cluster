@@ -1,0 +1,10 @@
+hadoop_temp_dir: /drives/xvdb/hadoop-tmp
+dfs_name_dir: /drives/xvdb/hadoop-data/dfs/name
+dfs_edits_dir: /drives/xvdb/hadoop-data/dfs/edits
+dfs_data_dirs:
+  - /drives/xvdb/dfs
+  - /drives/xvdc/dfs
+  - /drives/xvdd/dfs
+  - /drives/xvde/dfs
+dfs_replication: 2
+dfs_block_size: 134217728

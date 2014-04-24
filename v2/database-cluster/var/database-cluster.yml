@@ -1,0 +1,26 @@
+# When creating a brand new cluster, instead of adding nodes to an existing one, override this var on command line
+new_cassandra_cluster: false
+
+seed_count: 1
+node_count: 1
+node_ami: ami-4cba4b3b
+node_instance_type: m3.xlarge
+
+
+database_node_volumes:
+  - device_name: /dev/sdb
+    volume_size: 10
+    delete_on_termination: true
+  - device_name: /dev/sdc
+    volume_size: 30
+    delete_on_termination: true
+  - device_name: /dev/sdd
+    volume_size: 30
+    delete_on_termination: true
+
+cluster_name: database DB cluster
+commitlog_directory: /drives/xvdb/commitlog
+saved_caches_directory: /drives/xvdb/saved_caches
+data_file_directories:
+  - /drives/xvdc/data
+  - /drives/xvdd/data

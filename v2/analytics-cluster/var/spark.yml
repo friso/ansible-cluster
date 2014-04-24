@@ -1,0 +1,6 @@
+spark_local_dirs:
+  - /drives/xvdb/spark
+  - /drives/xvdc/spark
+  - /drives/xvdd/spark
+  - /drives/xvde/spark
+spark_worker_dir: /drives/xvdb/spark-worker

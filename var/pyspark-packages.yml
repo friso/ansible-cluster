@@ -1,0 +1,9 @@
+packages:
+  - numpy
+  - scipy
+  - scikit-learn
+  - ipython[all]
+  - rpy2
+  - matplotlib
+  - pandas
+  - redis
